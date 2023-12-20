@@ -47,19 +47,24 @@ table {
 	border-spacing: 0;
 }
 /** end reset css**/
+
+/* GENERAL */
+
 body {
 	max-width: 1140px;
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
+	background: #FFFEF8;
 }
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 50px 0;
 }
+
 section {
-	margin: 50px 0
+	margin: 50px 0;
 }
 
 h1{
@@ -68,22 +73,24 @@ h1{
 	font-family: 'Syne';
 	font-size: 22px;
 	font-weight: 800;
-	color: #B1663C
+	color: #B1663C;
 }
 
 h1 > span {
 	font-family: 'Work Sans';
 	font-size:10px;
 	letter-spacing: 0.1em;
-;
 }
 
 h2{
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 30px;
-	color: #1D6154
+	color: #1D6154;
 }
+
+/* HEADER */
+
 nav ul {
 	display: flex;
 	align-items: center;
@@ -95,15 +102,25 @@ nav li {
 	font-size: 1.2em;
 }
 
-li:hover {
+li:hover, .login:hover{
 	color: #B1663C;
+	cursor: pointer;
 }
+
+.login {
+	text-decoration: none;
+	color: #000;
+	font-weight: 600;
+}
+
+/* INTRO */
+
 #introduction {
 	display: flex;
 	align-items: center;
 }
 #introduction figure {
-	flex: 1
+	flex: 1;
 }
 #introduction img {
 	display: block;
@@ -112,7 +129,7 @@ li:hover {
 }
 
 #introduction article {
-	flex: 1
+	flex: 1;
 }
 #introduction h2 {
 	margin-bottom: 1em;
@@ -125,6 +142,40 @@ li:hover {
 	text-align: center;
 	margin-bottom: 1em;
 }
+
+/* CATEGORIES */
+
+.filter-categories{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	margin: 50px 0;
+}
+
+.button {
+	display: flex;
+	align-items: center;
+	border: 1px #1d6154 solid;
+	border-radius: 60px;
+	color: #1d6154;
+	background: white;
+	height: 28px;
+	font-family: "Syne", sans-serif;
+	font-weight: 700;
+	font-size: 16px;
+	text-align: center;
+	padding: 3px 20px;
+	cursor: pointer;
+  }
+
+.selected {
+	background: #1D6154;
+	color: white;
+}
+
+/* IMAGES */
+
 .gallery {
 	width: 100%;
 	display: grid;
@@ -137,31 +188,35 @@ li:hover {
 	width: 100%;
 
 }
-#contact {
+
+/* CONTACT ET LOGIN  FORM */
+
+#contact, #login {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
-#contact > * {
+
+#contact > *, #login > * {
 	text-align: center;
 
 }
-#contact h2{
+#contact h2, #login h2{
 	margin-bottom: 20px;
 }
-#contact form {
+#contact form, #login form {
 	text-align: left;
 	margin-top:30px;
 	display: flex;
 	flex-direction: column;
 }
 
-#contact input {
+#contact input, #login input {
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-#contact label {
+#contact label, #login label {
 	margin: 2em 0 1em 0;
 }
 #contact textarea {
@@ -177,12 +232,25 @@ input[type="submit"]{
 	margin : 2em auto ;
 	width: 180px;
 	text-align: center;
-	border-radius: 60px ;
+	border-radius: 60px;
+}
+
+#login a {
+	color: #3D3D3D;
+	text-align: center;
+}
+
+/* FOOTER */
+
+.footer-login{
+    position: fixed;
+    bottom: 0;
+    width: 85%;
+	background: white;
 }
 
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
-	margin: 2em
+	margin: 2em;
 }
-

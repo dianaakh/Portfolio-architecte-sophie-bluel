@@ -1,9 +1,24 @@
 document.addEventListener("DOMContentLoaded", async () => {
     try {
+        const connected = window.localStorage.getItem('connected')
+
+        if (connected) {
+            const btnLogout = document.querySelector('.nav-connexion')
+            btnLogout.textContent = "logout"
+
+            btnLogout.addEventListener('click', () => {
+                // Déconnexion de l'utilisateur en supprimant les informations de connexion
+                window.localStorage.removeItem('connected')
+                window.localStorage.removeItem('payload')
+                window.location.reload(); // Recharger la page après déconnexion
+            })
+        }
         const categories = await getCategories()
-        const images = await getGallery()
-        createFilters(categories, portfolioParent)
-        createGallery(images, portfolioParent)
+        const works = await getGallery()
+        const conteneurParent = document.getElementById('portfolio')
+        createFilters(categories, conteneurParent)
+        appendGallery(works, conteneurParent) // Pour afficher les œuvres initiales
+        filterWorks(works, conteneurParent)
     } catch (error) {
         console.error(error)
     }
@@ -23,35 +38,64 @@ const getCategories = async () => {
     return data
 }
 
-/// AJOUX TRAVAUX GALERIE  ///////
+/// AJOUTER/VIDER TRAVAUX GALERIE  ///////
 
-const portfolioParent = document.getElementById('portfolio')
+const clearGallery = (conteneurParent) => {
+    const gallery = conteneurParent.querySelector('.gallery')
+    if (gallery) {
+        gallery.remove()
+    }
+}
 
-const createGallery = (images, portfolioParent) => {
-    
+const appendGallery = (works, conteneurParent) => {
     const gallery = document.createElement("div")
     gallery.classList.add("gallery")
 
-    gallery.innerHTML = images.map((img) =>     // Utiliser les données reçues pour créer les balises HTML pour chaque image à l'aide de la méthode map
+    gallery.innerHTML = works.map((work) =>
         `<figure>
-         <img src=${img.imageUrl} alt=${img.title}>
-         <figcaption>${img.title}</figcaption>
-        </figure>`).join("")
+            <img src=${work.imageUrl} alt=${work.title}>
+            <figcaption>${work.title}</figcaption>
+        </figure>`
+    ).join("")
 
-    portfolioParent.appendChild(gallery)
+    conteneurParent.appendChild(gallery)
 }
 
-/// AJOUT FILTRES ///
+///// AJOUT FILTRES //////
 
-const createFilters = (categories, portfolioParent) => {
+const createFilters = (categories, conteneurParent) => {
 
     const filter = document.createElement("div")
     filter.classList.add("filter-categories")
 
-    filter.innerHTML = 
-    `<div class="button selected" id="0"> Tous </div>` 
-    + categories.map((category) => 
-    `<div class="button" id="${category.id}"> ${category.name} </div>`).join("")
+    filter.innerHTML =
+        `<div class="button selected" id="0"> Tous </div>`
+        + categories.map((category) =>
+            `<div class="button" id="${category.id}"> ${category.name} </div>`).join("")
 
-    portfolioParent.appendChild(filter)
+    conteneurParent.appendChild(filter)
+}
+
+///// FILTRER LES TRAVAUX ///////
+
+const filterWorks = (works, conteneurParent) => {
+    let btnFilter = document.querySelectorAll(".button")
+
+    btnFilter.forEach((btn, i) => {
+        btn.addEventListener("click", () => {
+            let worksToDisplay = []
+
+            if (i !== 0) {
+                worksToDisplay = works.filter((work) => work.categoryId == i)
+            } else {
+                worksToDisplay = works
+            }
+
+            clearGallery(conteneurParent)
+            appendGallery(worksToDisplay, conteneurParent)
+
+            btnFilter.forEach((btn) => btn.classList.remove("selected"))
+            btn.classList.add("selected")
+        })
+    })
 }

@@ -190,14 +190,18 @@ nav ul {
 nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
+	font-weight: 600;
 }
 
-li:hover, .login:hover, li a:hover {
+li:hover,
+.login:hover,
+li a:hover {
 	color: #B1663C;
 	cursor: pointer;
 }
 
-.nav-connexion, nav li a {
+.nav-connexion,
+nav li a {
 	text-decoration: none;
 	color: black;
 	font-weight: 600;
@@ -206,7 +210,7 @@ li:hover, .login:hover, li a:hover {
 .header_edit {
 	background-color: black;
 	height: 60px;
-	display: flex;
+	display: none;
 	justify-content: center;
 }
 
@@ -312,10 +316,85 @@ li:hover, .login:hover, li a:hover {
 	align-items: center;
 }
 
-.modify-content{
-	display: flex;
+.modify-content {
+	display: none;
 	margin-top: 50px;
 	gap: 10px;
+	cursor: pointer;
+	text-decoration: none;
+	color: black;
+}
+
+.modify-content p {
+	margin-top: 3px;
+}
+
+/* MODALE */
+
+.modale {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.4);
+	transition: visibility 0.4s;
+}
+
+.modale-wrapper {
+	display: flex;
+	flex-direction: column;
+	overflow: auto;
+	max-width: calc(98vh - 20px);
+	max-height: calc(98vh - 20px);
+	width: 630px;
+	padding: 30px;
+	border-radius: 10px;
+	background-color: white;
+	position: relative;
+}
+
+.modale-title {
+	margin: 30px 0 45px;
+	font-family: "Work Sans";
+	font-size: 26px;
+	font-weight: 400;
+	color: #000;
+	text-align: center;
+}
+
+.modale-bordure {
+	width: 420px;
+	border: 1px solid #B3B3B3;
+	margin-top: 25px;
+	margin-bottom: 30px;
+}
+
+.button_add_gallery {
+	display: flex;
+	align-items: center;
+	margin: auto;
+	border: 1px #1d6154 solid;
+	background: #1d6154;
+	color: #fff;
+	border-radius: 60px;
+	height: 36px;
+	font-family: "Syne", sans-serif;
+	font-weight: 700;
+	font-size: 14px;
+	text-align: center;
+	padding: 10px 50px;
+	cursor: pointer;
+}
+
+.modale-croix {
+	position: absolute;
+	top: 15px;
+	right: 15px;
 	cursor: pointer;
 }
 

@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const connected = window.localStorage.getItem('connected')
 
         if (connected) {
+
             const btnLogout = document.querySelector('.nav-connexion')
             btnLogout.textContent = "logout"
 
@@ -12,6 +13,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 window.localStorage.removeItem('payload')
                 window.location.reload(); // Recharger la page après déconnexion
             })
+
+            const editBande = document.querySelector(".header_edit")
+            editBande.style.display = "flex"  // Faire afficher la bande noire edition 
+
+            const linkModify = document.querySelector(".modify-content")
+            linkModify.style.display = "flex"   // Faire afficher le lien modifier
+
+            openCloseModal()
         }
         const categories = await getCategories()
         const works = await getGallery()
@@ -99,3 +108,23 @@ const filterWorks = (works, conteneurParent) => {
         })
     })
 }
+
+/////////////////////////////////////////////// MODALE ///////////////////////////////////////////////////////////////////////////////
+
+////// OUVRIR FERMER MODALE /////
+
+const openCloseModal = () => {
+    const modale = document.getElementById('modale')
+    const modaleTriggers = document.querySelectorAll('.modale-trigger')
+
+    modaleTriggers.forEach(trigger => {
+        trigger.addEventListener('click', () => {
+            modale.style.display = (modale.style.display === 'flex') ? 'none' : 'flex'
+        })
+    })
+}
+
+
+
+
+

@@ -3,19 +3,87 @@
    License: none (public domain)
 */
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -23,40 +91,61 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
 	display: block;
 }
+
 body {
 	line-height: 1;
 }
-ol, ul {
+
+ol,
+ul {
 	list-style: none;
 }
-blockquote, q {
+
+blockquote,
+q {
 	quotes: none;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
 	content: '';
 	content: none;
 }
+
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
 /** end reset css**/
 
 /* GENERAL */
 
 body {
 	max-width: 1140px;
-	margin:auto;
-	font-family: 'Work Sans' ;
+	margin: auto;
+	font-family: 'Work Sans';
 	font-size: 14px;
 	background: #FFFEF8;
 }
+
 header {
 	display: flex;
 	justify-content: space-between;
@@ -67,7 +156,7 @@ section {
 	margin: 50px 0;
 }
 
-h1{
+h1 {
 	display: flex;
 	flex-direction: column;
 	font-family: 'Syne';
@@ -76,13 +165,13 @@ h1{
 	color: #B1663C;
 }
 
-h1 > span {
+h1>span {
 	font-family: 'Work Sans';
-	font-size:10px;
+	font-size: 10px;
 	letter-spacing: 0.1em;
 }
 
-h2{
+h2 {
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 30px;
@@ -97,20 +186,44 @@ nav ul {
 	list-style-type: none;
 
 }
+
 nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
 }
 
-li:hover, .login:hover{
+li:hover, .login:hover, li a:hover {
 	color: #B1663C;
 	cursor: pointer;
 }
 
-.login {
+.nav-connexion, nav li a {
 	text-decoration: none;
-	color: #000;
+	color: black;
 	font-weight: 600;
+}
+
+.header_edit {
+	background-color: black;
+	height: 60px;
+	display: flex;
+	justify-content: center;
+}
+
+.edition {
+	display: flex;
+	color: white;
+	align-items: center;
+	gap: 10px;
+}
+
+.edition img {
+	width: 15px;
+	height: 15px;
+}
+
+.edition p {
+	font-size: 16px;
 }
 
 /* INTRO */
@@ -119,9 +232,11 @@ li:hover, .login:hover{
 	display: flex;
 	align-items: center;
 }
+
 #introduction figure {
 	flex: 1;
 }
+
 #introduction img {
 	display: block;
 	margin: auto;
@@ -131,6 +246,7 @@ li:hover, .login:hover{
 #introduction article {
 	flex: 1;
 }
+
 #introduction h2 {
 	margin-bottom: 1em;
 }
@@ -138,14 +254,10 @@ li:hover, .login:hover{
 #introduction p {
 	margin-bottom: 0.5em;
 }
-#portfolio h2 {
-	text-align: center;
-	margin-bottom: 1em;
-}
 
 /* CATEGORIES */
 
-.filter-categories{
+.filter-categories {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -167,14 +279,20 @@ li:hover, .login:hover{
 	text-align: center;
 	padding: 3px 20px;
 	cursor: pointer;
-  }
+}
 
 .selected {
 	background: #1D6154;
 	color: white;
 }
 
-/* IMAGES */
+/* PORTFOLIO */
+
+#portfolio h2 {
+	text-align: center;
+	margin-right: 15px;
+	margin-top: 50px;
+}
 
 .gallery {
 	width: 100%;
@@ -186,50 +304,73 @@ li:hover, .login:hover{
 
 .gallery img {
 	width: 100%;
-
 }
 
-/* CONTACT ET LOGIN  FORM */
+.container-modify {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 
-#contact, #login {
+.modify-content{
+	display: flex;
+	margin-top: 50px;
+	gap: 10px;
+	cursor: pointer;
+}
+
+/* CONTACT ET LOGIN FORM */
+
+#contact,
+#login {
 	width: 50%;
 	margin: auto;
 }
 
-#contact > *, #login > * {
+#contact>*,
+#login>* {
 	text-align: center;
 
 }
-#contact h2, #login h2{
+
+#contact h2,
+#login h2 {
 	margin-bottom: 20px;
 }
-#contact form, #login form {
+
+#contact form,
+#login form {
 	text-align: left;
-	margin-top:30px;
+	margin-top: 30px;
 	display: flex;
 	flex-direction: column;
 }
 
-#contact input, #login input {
+#contact input,
+#login input {
 	height: 50px;
+	padding-left: 15px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-#contact label, #login label {
+
+#contact label,
+#login label {
 	margin: 2em 0 1em 0;
 }
+
 #contact textarea {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-input[type="submit"]{
+input[type="submit"] {
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
 	background-color: #1D6154;
-	margin : 2em auto ;
+	margin: 2em auto;
 	width: 180px;
 	text-align: center;
 	border-radius: 60px;
@@ -240,12 +381,18 @@ input[type="submit"]{
 	text-align: center;
 }
 
+.error {
+	margin: 15px 0;
+	color: red;
+	font-style: italic;
+}
+
 /* FOOTER */
 
-.footer-login{
-    position: fixed;
-    bottom: 0;
-    width: 85%;
+.footer-login {
+	position: fixed;
+	bottom: 0;
+	width: 85%;
 	background: white;
 }
 

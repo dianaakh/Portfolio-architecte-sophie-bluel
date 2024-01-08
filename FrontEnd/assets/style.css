@@ -136,7 +136,7 @@ table {
 
 /** end reset css**/
 
-/* GENERAL */
+/************** GENERAL **********************/
 
 body {
 	max-width: 1140px;
@@ -178,7 +178,7 @@ h2 {
 	color: #1D6154;
 }
 
-/* HEADER */
+/***************** HEADER **************************/
 
 nav ul {
 	display: flex;
@@ -207,6 +207,8 @@ nav li a {
 	font-weight: 600;
 }
 
+/*********************** HEADER EDITION **********************/
+
 .header_edit {
 	background-color: black;
 	height: 60px;
@@ -230,7 +232,7 @@ nav li a {
 	font-size: 16px;
 }
 
-/* INTRO */
+/**************************** INTRO **************************/
 
 #introduction {
 	display: flex;
@@ -259,7 +261,7 @@ nav li a {
 	margin-bottom: 0.5em;
 }
 
-/* CATEGORIES */
+/****************************** CATEGORIES *************************/
 
 .filter-categories {
 	display: flex;
@@ -290,7 +292,7 @@ nav li a {
 	color: white;
 }
 
-/* PORTFOLIO */
+/*************************** PORTFOLIO *********************************/
 
 #portfolio h2 {
 	text-align: center;
@@ -329,37 +331,34 @@ nav li a {
 	margin-top: 3px;
 }
 
-/* MODALE */
+/************************ MODALE GALERIE PHOTO ********************************/
 
 .modale {
 	display: none;
 	position: fixed;
 	top: 0;
 	left: 0;
-	display: flex;
 	align-items: center;
 	justify-content: center;
 	width: 100%;
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.4);
-	transition: visibility 0.4s;
 }
 
 .modale-wrapper {
 	display: flex;
 	flex-direction: column;
 	overflow: auto;
-	max-width: calc(98vh - 20px);
-	max-height: calc(98vh - 20px);
-	width: 630px;
-	padding: 30px;
+	max-width: calc(75vh - 20px);
+	max-height: calc(86vh - 20px);
+	padding: 60px;
 	border-radius: 10px;
 	background-color: white;
 	position: relative;
 }
 
 .modale-title {
-	margin: 30px 0 45px;
+	margin: 0 0 45px;
 	font-family: "Work Sans";
 	font-size: 26px;
 	font-weight: 400;
@@ -367,16 +366,35 @@ nav li a {
 	text-align: center;
 }
 
+.js-modale-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.js-modale-gallery figure {
+    width: calc(20% - 12px);
+    position: relative;
+    padding-bottom: 10px; 
+}
+
+.js-modale-gallery img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
 .modale-bordure {
 	width: 420px;
-	border: 1px solid #B3B3B3;
-	margin-top: 25px;
+	border: 0.5px solid #B3B3B3;
+	margin-top: 40px;
 	margin-bottom: 30px;
 }
 
-.button_add_gallery {
+.btn-add-photo, .btn-validate {
 	display: flex;
 	align-items: center;
+    justify-content: center;
 	margin: auto;
 	border: 1px #1d6154 solid;
 	background: #1d6154;
@@ -384,21 +402,110 @@ nav li a {
 	border-radius: 60px;
 	height: 36px;
 	font-family: "Syne", sans-serif;
-	font-weight: 700;
 	font-size: 14px;
-	text-align: center;
 	padding: 10px 50px;
 	cursor: pointer;
 }
 
-.modale-croix {
+.btn-validate:disabled {
+    background-color: #A7A7A7;
+    border: none;
+}
+
+.fa-trash-can::before {
 	position: absolute;
-	top: 15px;
-	right: 15px;
+    top: 5px;
+    right: 5px;
+    color: white;
+    background: black;
+    padding: 5px;
+    border-radius: 5px;
+	font-size: 12px;
 	cursor: pointer;
 }
 
-/* CONTACT ET LOGIN FORM */
+/********************* MODALE AJOUT PROJETS *********************************/
+
+.fa-arrow-left:before, .fa-xmark:before{
+	position: absolute;
+	top: 25px;
+	font-size: 18px;
+	color: black;
+	cursor: pointer;
+}
+
+.fa-arrow-left:before{
+	left: 25px;
+}
+
+.fa-xmark:before{
+	right: 25px;
+}
+
+.form-photo{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: #E8F1F7;
+	height: 170px;
+	border-radius: 10px;
+}
+
+.form-photo i{
+	color: #CBD6DC;
+	font-size: 75px;
+	margin: 20px;
+	margin-top: -15px;
+}
+
+.form-photo input {
+	display: none;
+}
+
+.form-photo label {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 175px;
+	height: 35px;
+	background-color: #CBD6DC;
+	color: #306685;
+	border-radius: 50px;
+	cursor: pointer;
+	margin-top: -10px;
+}
+
+.form-photo p {
+	color: #444;
+    font-size: 10px;
+    padding-top: 7px;
+}
+
+.form-title, .form-categorie{
+	display: flex;
+	flex-direction: column;
+	width: 420px;
+}
+
+.form-title label, .form-categorie label{
+	margin: 2em 0 1em 0;
+}
+
+.form-title input, .form-categorie select{
+	height: 50px;
+	font-size: 15px;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	border-right: 20px solid transparent;
+    padding-right: 5px;
+}
+
+.btn-validate{
+	width: 237px;
+}
+
+/********************** CONTACT ET LOGIN FORM ********************************/
 
 #contact,
 #login {
@@ -466,7 +573,7 @@ input[type="submit"] {
 	font-style: italic;
 }
 
-/* FOOTER */
+/******************************** FOOTER ******************************************/
 
 .footer-login {
 	position: fixed;

@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 })
 
-////// RECUPERER DONNES /////
+/// RECUPERER DONNES ///
 
 const getGallery = async () => {
     const res = await fetch("http://localhost:5678/api/works")  // Envoi d'une requête pour récupérer les données des travaux à partir de l'URL spécifiée
@@ -48,7 +48,7 @@ const getCategories = async () => {
     return data
 }
 
-/// AJOUTER/VIDER TRAVAUX GALERIE  ///////
+/// AJOUTER/VIDER TRAVAUX GALERIE  ///
 
 const clearGallery = (conteneurParent) => {
     const gallery = conteneurParent.querySelector('.gallery')
@@ -71,7 +71,7 @@ const appendGallery = (works, conteneurParent) => {
     conteneurParent.appendChild(gallery)
 }
 
-///// AJOUT FILTRES //////
+/// AJOUT FILTRES ///
 
 const createFilters = (categories, conteneurParent) => {
 
@@ -86,7 +86,7 @@ const createFilters = (categories, conteneurParent) => {
     conteneurParent.appendChild(filter)
 }
 
-///// FILTRER LES TRAVAUX ///////
+/// FILTRER LES TRAVAUX ///
 
 const filterWorks = (works, conteneurParent) => {
     let btnFilter = document.querySelectorAll(".button")
@@ -120,15 +120,24 @@ const openCloseModal = (works) => {
 
     modaleTriggers.forEach(trigger => {
         trigger.addEventListener('click', () => {
-            modale.style.display = (modale.style.display === 'flex') ? 'none' : 'flex'
+            if (modale.style.display === 'flex') {
+                modale.style.display = 'none'
+                resetForm()
+            } else {
+                modale.style.display = 'flex'   // Afficher modale
+                firstModalState()
+            }
         })
     })
-    worksToDisplayModal(works)
+
+    displayWorksInModal(works)
+    SecondModalState(works)
+    handlePhotoSelection()   // Appel de la fonction pour gérer la sélection de fichier
 }
 
-/// FAIRE AFFICHER TRAVAUX DANS MODALE ///
+/// AFFICHER DIFFERENTS CONTENUS MODALE ///
 
-const worksToDisplayModal = (works) => {
+const displayWorksInModal = (works) => {
     const modaleGallery = document.querySelector('.js-modale-gallery')
 
     modaleGallery.innerHTML = works.map((work) =>
@@ -139,69 +148,126 @@ const worksToDisplayModal = (works) => {
     ).join("")
 }
 
-/// MODIFIER CONTENU DE LA MODALE AU CLIC SUR BTN AJOUTER OU VALIDER ///
+const firstModalState = () => {
+    console.log('firstModalState() a été appelée')
+    const firstModal = document.querySelector('.modale-first')
+    const secondModal = document.querySelector('.modale-second')
 
+    firstModal.style.display = 'block'
+    secondModal.style.display = 'none'
+}
+
+const SecondModalState = (works) => {
+    console.log('secondModalState() a été appelée')
     const btnAddPhoto = document.querySelector('.btn-add-photo')
-    const modaleContent = document.querySelector('.js-modale-content')
+    const firstModal = document.querySelector('.modale-first')
+    const secondModal = document.querySelector('.modale-second')
 
     btnAddPhoto.addEventListener('click', () => {
+        firstModal.style.display = 'none'
+        secondModal.style.display = 'block'
 
-        modaleContent.innerHTML =
-            `<div>
-        <i class="fa-solid fa-arrow-left js-modale-return"></i>
-        <i class="fa-solid fa-xmark js-modale-trigger"></i>
-        </div>
-
-        <h2 class="modale-title">Ajout photo</h2>
-
-        <form action="" enctype="multipart/form-data">
-
-        <div class="form-photo">
-            <i class="fa-regular fa-image"></i>
-            <label for="photo">+ Ajouter une photo</label>
-            <input class="js-photo" type="file" name="photo" id="photo">
-            <p> jpg, png : 4mo max </p>
-        </div>
-
-        <div class="form-title">
-            <label for="titre">Titre</label>
-            <input class="js-title" type="text" name="titre" id="titre">
-        </div>
-
-        <div class="form-categorie">
-            <label for="categorie">Catégorie</label>
-            <select class="js-categoryId" name="categorie" id="categorie">
-                <option value="" disabled selected hidden></option>
-                <option value="1">Objets</option>
-                <option value="2">Appartements</option>
-                <option value="3">Hôtels & restaurants</option>
-            </select>
-        </div>
-
-        <hr class="modale-bordure">
-        <button class="btn-validate" disabled> Valider </button>
-        </form>`
-    })
-
-
-const returnBack = (works) => {
-    const arrowReturn = document.querySelector('.js-modale-return')
-
-    arrowReturn.addEventListener('click', () => {
-        worksToDisplayModal(works)
+        returnBack(works)
     })
 }
 
-returnBack()
+/// RETOUR EN ARRIERE ///
+
+const returnBack = () => {
+    const arrowModal = document.querySelector(".js-arrow-second")
+    if (arrowModal !== null) {
+
+        arrowModal.addEventListener("click", () => {
+            firstModalState()   // Afficher la version initiale de la modale
+        })
+    }
+}
+
+/// FONCTION POUR GERER SELECTION FICHIER ET VALIDER IMAGE ///
+
+const handlePhotoSelection = () => {
+    const inputPhoto = document.getElementById('photo') // Sélection de l'élément input avec l'ID 'photo'
+
+    inputPhoto.addEventListener("change", () => {
+
+        const file_extension_regex = /\.(jpe?g|png)$/i
+        const maxFileSize = 4 * 1024 * 1024  // Taille maximale autorisée : 4 Mo (en octets)
+
+        if (inputPhoto.files.length === 0 || !file_extension_regex.test(inputPhoto.files[0].name)) {
+            alert("Format non pris en charge ou aucun fichier sélectionné")
+            resetForm()
+        } else if (inputPhoto.files[0].size > maxFileSize) {
+            alert("La taille du fichier dépasse 4 Mo. Veuillez choisir un fichier plus petit.")
+            resetForm()
+        } else {
+            displaySelectedImage(inputPhoto.files[0])
+        }
+    })
+}
 
 
-/// AJOUTER TRAVAUX ///
+/// FONCTION POUR AFFICHER IMAGE SELECTIONNEE ///
+
+const displaySelectedImage = (file) => {
+    const img = document.createElement('img')
+    img.classList.add('img-uploaded')
+    const url = URL.createObjectURL(file)  // Crée une URL à partir du fichier sélectionné
+    const labelPhoto = document.querySelector('.label-photo')
+
+    img.src = url
+    labelPhoto.innerHTML = ""
+    labelPhoto.appendChild(img)
+}
 
 
+/// FONCTION REINITIALISATION FORMULAIRE ///
 
+const resetForm = () => {
+    const formPhoto = document.querySelector('.form-photo')
+    const labelPhoto = document.querySelector('.label-photo')
+    const inputFormTitle = document.getElementById("title")
+    const selectCategories = document.getElementById('categorie')
 
+    formPhoto.innerHTML = `
+        <i class="fa-regular fa-image"></i>
+        <div class="label-photo">+ Ajouter photo</div>
+        <p> jpg, png : 4mo max </p> `
 
+    selectCategories.value = ""
+    labelPhoto.value = ""
+    inputFormTitle.value = ""
+}
 
+/// FONCTION QUI ACTIVE LE BOUTON VERT SI LES CONDITIONS SONT REMPLIES ///
 
+const btnValidateForm = () => {
+    const btnValidate = document.querySelector('.btn-validate')
+    const selectCategories = document.getElementById('categorie')
 
+    if (inputFormTitle.value !== "" && selectCategories.value !== "" && inputPhoto.files.length > 0) {
+        btnValidate.style.background = "#1D6154"
+        btnValidate.disabled = false
+        btnValidate.style.cursor = "pointer"
+    } else {
+        btnValidate.disabled = true
+        btnValidate.style.background = "#A7A7A7"
+        btnValidate.style.cursor = "auto"
+    }
+}
 
+const selectCategories = document.getElementById('categorie')
+const inputFormTitle = document.getElementById("title")
+const inputPhoto = document.getElementById('photo')
+
+/// FONCTION QUI AJOUTE LES EVENT LISTENERS LIE AU FORMULAIRE PHOTO ///
+
+const eventListenersForm = () => {
+    if (inputFormTitle !== null && selectCategories !== null && inputPhoto !== null) {
+        inputFormTitle.addEventListener('input', btnValidateForm)
+        selectCategories.addEventListener('input', btnValidateForm)
+        inputPhoto.addEventListener('input', btnValidateForm)
+        formUploadImg.addEventListener('submit', addProject)
+    }
+}
+
+eventListenersForm()

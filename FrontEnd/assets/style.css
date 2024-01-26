@@ -139,21 +139,20 @@ table {
 /************** GENERAL **********************/
 
 body {
-	max-width: 1140px;
-	margin: auto;
 	font-family: 'Work Sans';
 	font-size: 14px;
 	background: #FFFEF8;
+	margin: auto;
 }
 
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0;
+	margin: 50px 10%;
 }
 
 section {
-	margin: 50px 0;
+	margin: 50px 10%;
 }
 
 h1 {
@@ -182,29 +181,23 @@ h2 {
 
 nav ul {
 	display: flex;
-	align-items: center;
-	list-style-type: none;
-
 }
 
 nav li {
 	padding: 0 10px;
-	font-size: 1.2em;
-	font-weight: 600;
+	font-size: 16px;
+	font-weight: 400;
 }
 
-li:hover,
-.login:hover,
-li a:hover {
-	color: #B1663C;
+li:hover, li a:hover {
+	font-weight:900;
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 	cursor: pointer;
 }
 
-.nav-connexion,
 nav li a {
 	text-decoration: none;
 	color: black;
-	font-weight: 600;
 }
 
 /*********************** HEADER EDITION **********************/
@@ -214,6 +207,7 @@ nav li a {
 	height: 60px;
 	display: none;
 	justify-content: center;
+	width: 100%;
 }
 
 .edition {
@@ -259,6 +253,8 @@ nav li a {
 
 #introduction p {
 	margin-bottom: 0.5em;
+    color: #3D3D3D;
+    line-height: normal;
 }
 
 /****************************** CATEGORIES *************************/
@@ -312,6 +308,13 @@ nav li a {
 	width: 100%;
 }
 
+figcaption {
+	color: #3D3D3D;
+	font-size: 13px;
+	line-height: normal;
+	margin-top: 5px;
+}
+
 .container-modify {
 	display: flex;
 	justify-content: center;
@@ -333,7 +336,7 @@ nav li a {
 
 /************************ MODALE GALERIE PHOTO ********************************/
 
-.modale {
+#modale {
 	display: none;
 	position: fixed;
 	top: 0;
@@ -349,12 +352,16 @@ nav li a {
 	display: flex;
 	flex-direction: column;
 	overflow: auto;
-	max-width: calc(75vh - 20px);
+	width: 630px;
 	max-height: calc(86vh - 20px);
 	padding: 60px;
 	border-radius: 10px;
 	background-color: white;
 	position: relative;
+}
+
+.modale-first {
+	display: block;
 }
 
 .modale-title {
@@ -367,21 +374,21 @@ nav li a {
 }
 
 .js-modale-gallery {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 15px;
 }
 
 .js-modale-gallery figure {
-    width: calc(20% - 12px);
-    position: relative;
-    padding-bottom: 10px; 
+	width: calc(20% - 12px);
+	position: relative;
+	padding-bottom: 10px;
 }
 
 .js-modale-gallery img {
-    width: 100%;
-    height: auto;
-    display: block;
+	width: 100%;
+	height: auto;
+	display: block;
 }
 
 .modale-bordure {
@@ -391,10 +398,11 @@ nav li a {
 	margin-bottom: 30px;
 }
 
-.btn-add-photo, .btn-validate {
+.btn-add-photo,
+.btn-validate {
 	display: flex;
 	align-items: center;
-    justify-content: center;
+	justify-content: center;
 	margin: auto;
 	border: 1px #1d6154 solid;
 	background: #1d6154;
@@ -407,26 +415,26 @@ nav li a {
 	cursor: pointer;
 }
 
-.btn-validate:disabled {
-    background-color: #A7A7A7;
-    border: none;
-}
-
 .fa-trash-can::before {
 	position: absolute;
-    top: 5px;
-    right: 5px;
-    color: white;
-    background: black;
-    padding: 5px;
-    border-radius: 5px;
+	top: 5px;
+	right: 5px;
+	color: white;
+	background: black;
+	padding: 5px;
+	border-radius: 5px;
 	font-size: 12px;
 	cursor: pointer;
 }
 
 /********************* MODALE AJOUT PROJETS *********************************/
 
-.fa-arrow-left:before, .fa-xmark:before{
+.modale-second {
+	display: none;
+}
+
+.fa-arrow-left:before,
+.fa-xmark:before {
 	position: absolute;
 	top: 25px;
 	font-size: 18px;
@@ -434,15 +442,15 @@ nav li a {
 	cursor: pointer;
 }
 
-.fa-arrow-left:before{
+.fa-arrow-left:before {
 	left: 25px;
 }
 
-.fa-xmark:before{
+.fa-xmark:before {
 	right: 25px;
 }
 
-.form-photo{
+.form-photo {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -450,9 +458,10 @@ nav li a {
 	background-color: #E8F1F7;
 	height: 170px;
 	border-radius: 10px;
+	width: 420px;
 }
 
-.form-photo i{
+.form-photo i {
 	color: #CBD6DC;
 	font-size: 75px;
 	margin: 20px;
@@ -463,7 +472,13 @@ nav li a {
 	display: none;
 }
 
-.form-photo label {
+.form-upload-photo {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.label-photo {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -478,45 +493,56 @@ nav li a {
 
 .form-photo p {
 	color: #444;
-    font-size: 10px;
-    padding-top: 7px;
+	font-size: 10px;
+	padding-top: 7px;
 }
 
-.form-title, .form-categorie{
+.form-title,
+.form-categorie {
 	display: flex;
 	flex-direction: column;
 	width: 420px;
 }
 
-.form-title label, .form-categorie label{
+.form-title label,
+.form-categorie label {
 	margin: 2em 0 1em 0;
 }
 
-.form-title input, .form-categorie select{
+.form-title input,
+.form-categorie select {
 	height: 50px;
 	font-size: 15px;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 	border-right: 20px solid transparent;
-    padding-right: 5px;
+	padding-right: 5px;
+	padding-left: 5px;
 }
 
-.btn-validate{
+.form-title-input {
+	text-indent: 8px;
+}
+
+.btn-validate {
 	width: 237px;
+	background-color: #A7A7A7;
+	border: none;
+}
+
+.img-uploaded {
+	height: 170px;
+	width: 173px;
+	object-fit: cover;
+	margin-top: -54px;
+	z-index: 1;
 }
 
 /********************** CONTACT ET LOGIN FORM ********************************/
 
-#contact,
-#login {
-	width: 50%;
-	margin: auto;
-}
-
 #contact>*,
 #login>* {
 	text-align: center;
-
 }
 
 #contact h2,
@@ -524,42 +550,68 @@ nav li a {
 	margin-bottom: 20px;
 }
 
+#contact p {
+	color: #3D3D3D;
+	font-size: 16px;
+}
+
 #contact form,
 #login form {
-	text-align: left;
 	margin-top: 30px;
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 }
 
 #contact input,
 #login input {
 	height: 50px;
-	padding-left: 15px;
 	font-size: 1.2em;
 	border: none;
+	text-indent: 10px;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+#contact #contact-message {
+	margin-left: 8px;
+}
+
+#name,
+#email,
+#password {
+	width: 359px;
 }
 
 #contact label,
 #login label {
-	margin: 2em 0 1em 0;
+	margin: 2em 21em 1em -12px;
+}
+
+#login #label-password {
+	margin-left: 35px;
 }
 
 #contact textarea {
+	width: 359px;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-input[type="submit"] {
+#contact input[type="submit"],
+#login input[type="submit"] {
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
 	background-color: #1D6154;
+	text-indent : 0;
 	margin: 2em auto;
 	width: 180px;
 	text-align: center;
 	border-radius: 60px;
+}
+
+input:focus {
+    background: #fff;
 }
 
 #login a {
@@ -574,6 +626,11 @@ input[type="submit"] {
 }
 
 /******************************** FOOTER ******************************************/
+
+footer {
+	margin: auto;
+	padding: 0 5%;
+}
 
 .footer-login {
 	position: fixed;

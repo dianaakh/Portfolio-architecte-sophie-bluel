@@ -24,7 +24,6 @@ const login = async () => {
     })
 
     if (res.ok) {
-
         // Si la connexion réussit, obtenir le token et le stocker dans le localStorage ainsi que la variable de connexion
         const data = await res.json()
         const userdata = data.token
@@ -35,9 +34,7 @@ const login = async () => {
         document.location.href = ("index.html")
 
     } else {
-
         // Gérer un échec de connexion
-
         const messageError = document.createElement("p")
         messageError.classList.add("error")
         messageError.textContent = "Erreur dans l’identifiant ou le mot de passe"

@@ -2,12 +2,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
         const categories = await getCategories()
         const works = await getGallery()
-        const conteneurParent = document.getElementById('portfolio')
-        createFilters(categories, conteneurParent)
-        appendGallery(works, conteneurParent) // Pour afficher les œuvres initiales
-        filterWorks(works, conteneurParent)
 
-        const connected = window.localStorage.getItem('connected')
+        createFilters(categories)
+        appendGallery(works) // Pour afficher les œuvres initiales
+        filterWorks(works)
+
+        const connected = window.localStorage.getItem('connected')  // Vérifier si l'utilisateur est connecté en consultant les données stockées localement
 
         if (connected) {
 
@@ -18,15 +18,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             linkModify.style.display = "flex"   // Faire afficher le lien modifier
 
             openCloseModal(works)
+            eventListenersForm()
 
             // Déconnexion de l'utilisateur en supprimant les informations de connexion
             const btnLogout = document.querySelector('.nav-connexion')
             btnLogout.textContent = "logout"
 
             btnLogout.addEventListener('click', () => {
-                window.localStorage.removeItem('connected')
-                window.localStorage.removeItem('payload')
-                window.location.reload(); // Recharger la page après déconnexion
+                window.localStorage.removeItem('connected')  // Supprimer la clé 'connected' du stockage local indiquant que l'utilisateur n'est plus connecté
+                window.localStorage.removeItem('payload')   // Supprimer la clé 'payload' du stockage local qui peut contenir des informations d'authentification
+                window.location.reload() // Recharger la page après déconnexion
             })
         }
     } catch (error) {
@@ -34,7 +35,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 })
 
-/// RECUPERER DONNES ///
+/// RECUPERER DONNES 
 
 const getGallery = async () => {
     const res = await fetch("http://localhost:5678/api/works")  // Envoi d'une requête pour récupérer les données des travaux à partir de l'URL spécifiée
@@ -48,21 +49,24 @@ const getCategories = async () => {
     return data
 }
 
-/// AJOUTER/VIDER TRAVAUX GALERIE  ///
+/// AFFICHER/VIDER TRAVAUX GALERIE  
 
-const clearGallery = (conteneurParent) => {
-    const gallery = conteneurParent.querySelector('.gallery')
+const conteneurParent = document.getElementById('portfolio')  // Conteneur de la gallery et des filtres
+
+const clearGallery = () => {
+    const gallery = document.querySelector('.gallery')
     if (gallery) {
         gallery.remove()
     }
 }
 
-const appendGallery = (works, conteneurParent) => {
+const appendGallery = (works) => {
     const gallery = document.createElement("div")
     gallery.classList.add("gallery")
 
-    gallery.innerHTML = works.map((work) =>
-        `<figure>
+   // Utilisation de la méthode map pour parcourir chaque élément du tableau "works" et générer une chaîne de balises HTML représentant chaque œuvre dans la galerie
+    gallery.innerHTML = works.map((work) =>  
+        `<figure>                               
             <img src=${work.imageUrl} alt=${work.title}>
             <figcaption>${work.title}</figcaption>
         </figure>`
@@ -71,9 +75,9 @@ const appendGallery = (works, conteneurParent) => {
     conteneurParent.appendChild(gallery)
 }
 
-/// AJOUT FILTRES ///
+/// AFFICHER FILTRES 
 
-const createFilters = (categories, conteneurParent) => {
+const createFilters = (categories) => {
 
     const filter = document.createElement("div")
     filter.classList.add("filter-categories")
@@ -86,10 +90,10 @@ const createFilters = (categories, conteneurParent) => {
     conteneurParent.appendChild(filter)
 }
 
-/// FILTRER LES TRAVAUX ///
+/// FILTRER LES TRAVAUX 
 
-const filterWorks = (works, conteneurParent) => {
-    let btnFilter = document.querySelectorAll(".button")
+const filterWorks = (works) => {
+    const btnFilter = document.querySelectorAll(".button")
 
     btnFilter.forEach((btn, i) => {
         btn.addEventListener("click", () => {
@@ -101,8 +105,8 @@ const filterWorks = (works, conteneurParent) => {
                 worksToDisplay = works
             }
 
-            clearGallery(conteneurParent)
-            appendGallery(worksToDisplay, conteneurParent)
+            clearGallery()
+            appendGallery(worksToDisplay)
 
             btnFilter.forEach((btn) => btn.classList.remove("selected"))
             btn.classList.add("selected")
@@ -112,7 +116,7 @@ const filterWorks = (works, conteneurParent) => {
 
 /////////////////////////////////////////////// MODALE ///////////////////////////////////////////////////////////////////////////////
 
-/// OUVRIR FERMER MODALE ///
+
 
 const openCloseModal = (works) => {
     const modale = document.getElementById('modale')
@@ -120,36 +124,94 @@ const openCloseModal = (works) => {
 
     modaleTriggers.forEach(trigger => {
         trigger.addEventListener('click', () => {
-            if (modale.style.display === 'flex') {
-                modale.style.display = 'none'
-                resetForm()
-            } else {
-                modale.style.display = 'flex'   // Afficher modale
+            if (modale.style.display !== 'flex') {
+                modale.style.display = 'flex'        // Afficher la modale
                 firstModalState()
+
+            } else {
+                modale.style.display = 'none'        // Fermer la modale
+                resetForm()
             }
         })
     })
 
+    document.addEventListener('click', (event) => {
+        if (event.target.closest(".modale-wrapper") === null && event.target.closest(".modify-content") === null ) {
+            modale.style.display = 'none' // Fermer la modale
+            resetForm()
+        }
+    })
+
     displayWorksInModal(works)
-    SecondModalState(works)
-    handlePhotoSelection()   // Appel de la fonction pour gérer la sélection de fichier
+    secondModalState(works)
+    handlePhotoSelection()
 }
 
-/// AFFICHER DIFFERENTS CONTENUS MODALE ///
+
+/// FAIRE AFFICHER LES TRAVAUX DANS LA MODALE AVEC ICONE POUBELLE
 
 const displayWorksInModal = (works) => {
     const modaleGallery = document.querySelector('.js-modale-gallery')
 
     modaleGallery.innerHTML = works.map((work) =>
         `<figure>
-            <img src=${work.imageUrl} alt=${work.title}>
-            <i class="fa-solid fa-trash-can"></i>
+            <img src=${work.imageUrl} alt=${work.title} data-id=${work.id}>
+            <i class="fa-solid fa-trash-can" data-id=${work.id}></i>
         </figure>`
     ).join("")
+
+    eventListenerTrashIcon()
 }
 
+/// SUPPRESSION D'UN PROJET EXISTANT
+
+const eventListenerTrashIcon = () => {
+    let iconsTrash = document.querySelectorAll('.fa-trash-can')
+
+    for (let i = 0; i < iconsTrash.length; i++) {
+        iconsTrash[i].addEventListener('click', function (event) {
+            deleteWork(event)
+        })
+    }
+}
+
+const deleteWork = async (event) => {
+
+    // Récupère l'ID du projet à supprimer à partir de l'attribut "data-id" de l'élément déclencheur de l'événement
+    let id = event.target.dataset.id
+    console.log('ID à supprimer :', id, event)
+
+    try {
+        const res = await fetch(`http://localhost:5678/api/works/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Accept": "*/*",
+                "Authorization": "Bearer " + localStorage.payload,
+            },
+        })
+
+        if (res.ok) {
+            event.target.parentElement.remove()
+            const newGallery = await getGallery()
+            displayWorksInModal(newGallery)   // Afficher la modale avec les oeuvres mise à jour
+            clearGallery()                   // Vider ancienne gallerie dans la page principale
+            appendGallery(newGallery)       // Ajouter nouvelle gallerie dans la page principale
+
+        } else if (res.status === 401) {
+            alert('Session expirée, merci de vous reconnecter')
+            document.location.href = "login.html"
+        } else if (res.status === 500) {
+            alert('Erreur interne du serveur. Veuillez réessayer plus tard.')
+        }
+
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+/// DIFFERENTS ETATS DE LA MODALE 
+
 const firstModalState = () => {
-    console.log('firstModalState() a été appelée')
     const firstModal = document.querySelector('.modale-first')
     const secondModal = document.querySelector('.modale-second')
 
@@ -157,8 +219,8 @@ const firstModalState = () => {
     secondModal.style.display = 'none'
 }
 
-const SecondModalState = (works) => {
-    console.log('secondModalState() a été appelée')
+const secondModalState = (works) => {
+
     const btnAddPhoto = document.querySelector('.btn-add-photo')
     const firstModal = document.querySelector('.modale-first')
     const secondModal = document.querySelector('.modale-second')
@@ -168,10 +230,11 @@ const SecondModalState = (works) => {
         secondModal.style.display = 'block'
 
         returnBack(works)
+        handlePhotoSelection()
     })
 }
 
-/// RETOUR EN ARRIERE ///
+/// RETOUR EN ARRIERE 
 
 const returnBack = () => {
     const arrowModal = document.querySelector(".js-arrow-second")
@@ -183,68 +246,91 @@ const returnBack = () => {
     }
 }
 
-/// FONCTION POUR GERER SELECTION FICHIER ET VALIDER IMAGE ///
+/// FONCTION POUR GERER SELECTION FICHIER ET VALIDER IMAGE 
+
+const inputPhoto = document.getElementById('photo') // élément input photo
 
 const handlePhotoSelection = () => {
-    const inputPhoto = document.getElementById('photo') // Sélection de l'élément input avec l'ID 'photo'
 
     inputPhoto.addEventListener("change", () => {
 
-        const file_extension_regex = /\.(jpe?g|png)$/i
+        const fileExtensionRegex = /\.(jpe?g|png)$/i
         const maxFileSize = 4 * 1024 * 1024  // Taille maximale autorisée : 4 Mo (en octets)
 
-        if (inputPhoto.files.length === 0 || !file_extension_regex.test(inputPhoto.files[0].name)) {
+        if (inputPhoto.files.length === 0 || !fileExtensionRegex.test(inputPhoto.files[0].name)) {
             alert("Format non pris en charge ou aucun fichier sélectionné")
             resetForm()
         } else if (inputPhoto.files[0].size > maxFileSize) {
             alert("La taille du fichier dépasse 4 Mo. Veuillez choisir un fichier plus petit.")
             resetForm()
         } else {
-            displaySelectedImage(inputPhoto.files[0])
+            displaySelectedImage(inputPhoto.files[0])  // Afficher miniature image sélectionnée
         }
     })
 }
 
+/// FONCTION POUR AFFICHER IMAGE SELECTIONNEE 
 
-/// FONCTION POUR AFFICHER IMAGE SELECTIONNEE ///
+const labelPhoto = document.querySelector('.label-photo')
 
 const displaySelectedImage = (file) => {
     const img = document.createElement('img')
     img.classList.add('img-uploaded')
     const url = URL.createObjectURL(file)  // Crée une URL à partir du fichier sélectionné
-    const labelPhoto = document.querySelector('.label-photo')
 
     img.src = url
     labelPhoto.innerHTML = ""
+    labelPhoto.style.width = "0px"
     labelPhoto.appendChild(img)
 }
 
+/// FONCTION REINITIALISATION FORMULAIRE 
 
-/// FONCTION REINITIALISATION FORMULAIRE ///
+const formUploadPhoto = document.querySelector('.form-upload-photo')         // formulaire ajout photo
+const inputFormTitle = document.getElementById("title")                     // input titre du form     
+const selectCategory = document.getElementById('categorie')                 // sélecteur de catégorie du form 
 
 const resetForm = () => {
-    const formPhoto = document.querySelector('.form-photo')
-    const labelPhoto = document.querySelector('.label-photo')
-    const inputFormTitle = document.getElementById("title")
-    const selectCategories = document.getElementById('categorie')
+    formUploadPhoto.innerHTML = `
+    <form action="" method="post" enctype="multipart/form-data" class="form-upload-photo">
+			<div class="form-photo">
+				<i class="fa-regular fa-image"></i>
+				<label class='label-photo' for="photo">+ Ajouter une photo</label>
+				<input type="file" name="photo" id="photo">
+				<p> jpg, png : 4mo max </p>
+			</div>
 
-    formPhoto.innerHTML = `
-        <i class="fa-regular fa-image"></i>
-        <div class="label-photo">+ Ajouter photo</div>
-        <p> jpg, png : 4mo max </p> `
+			<div class="form-title">
+				<label for="title">Titre</label>
+				<input type="text" name="titre" id="title">
+			</div>
 
-    selectCategories.value = ""
-    labelPhoto.value = ""
+			<div class="form-categorie">
+				<label for="categorie">Catégorie</label>
+				<select name="categorie" id="categorie">
+                <option class="option-default" value="" selected></option>
+                <option class="option" value="1">Objets</option>
+                <option class="option" value="2">Appartements</option>
+                <option class="option" value="3">Hôtels & restaurants</option>
+				</select>
+			</div>
+            <hr class="modale-bordure">
+			<button class="btn-validate"> Valider </button>
+	</form>`
+
+    selectCategory.value = ""
     inputFormTitle.value = ""
+    inputPhoto.value = ""  // Réinitialiser le champ de sélection de fichier 
+
+    handlePhotoSelection()   // Réattribuer l'événement après la réinitialisation du formulaire
 }
 
-/// FONCTION QUI ACTIVE LE BOUTON VERT SI LES CONDITIONS SONT REMPLIES ///
+/// FONCTION QUI ACTIVE LE BOUTON VERT SI LES CONDITIONS SONT REMPLIES 
 
 const btnValidateForm = () => {
     const btnValidate = document.querySelector('.btn-validate')
-    const selectCategories = document.getElementById('categorie')
 
-    if (inputFormTitle.value !== "" && selectCategories.value !== "" && inputPhoto.files.length > 0) {
+    if (inputFormTitle.value !== "" && selectCategory.value !== "" && inputPhoto.files.length > 0) {
         btnValidate.style.background = "#1D6154"
         btnValidate.disabled = false
         btnValidate.style.cursor = "pointer"
@@ -255,19 +341,63 @@ const btnValidateForm = () => {
     }
 }
 
-const selectCategories = document.getElementById('categorie')
-const inputFormTitle = document.getElementById("title")
-const inputPhoto = document.getElementById('photo')
-
-/// FONCTION QUI AJOUTE LES EVENT LISTENERS LIE AU FORMULAIRE PHOTO ///
+/// FONCTION QUI AJOUTE LES EVENT LISTENERS LIE AU FORMULAIRE PHOTO 
 
 const eventListenersForm = () => {
-    if (inputFormTitle !== null && selectCategories !== null && inputPhoto !== null) {
+    if (inputFormTitle !== null && selectCategory !== null && inputPhoto !== null) {
         inputFormTitle.addEventListener('input', btnValidateForm)
-        selectCategories.addEventListener('input', btnValidateForm)
-        inputPhoto.addEventListener('input', btnValidateForm)
-        formUploadImg.addEventListener('submit', addProject)
+        selectCategory.addEventListener('input', btnValidateForm)
+        inputPhoto.addEventListener('change', btnValidateForm)
+        formUploadPhoto.addEventListener('submit', addNewWork)   // Ajouter la nouvelle oeuvre à la gallerie au moment de la soumission du form de la modale
     }
 }
 
-eventListenersForm()
+/// AJOUT PROJET
+
+const addNewWork = async (event) => {
+    event.preventDefault()     // empêche le rechargement de la page, permettant ainsi l'exécution de la requête asynchrone (fetch) sans interruption
+
+    const formData = new FormData()
+    formData.append("image", inputPhoto.files[0])     // On associe les valeurs aux clefs et on les ajoute au formData
+    formData.append('title', inputFormTitle.value)
+    formData.append('category', selectCategory.value)
+
+    try {
+        const res = await fetch("http://localhost:5678/api/works", {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + localStorage.payload,
+            },
+            body: formData,
+        })
+
+        if (res.ok) {
+            const newGallery = await getGallery() // Récupérer la nouvelle liste des travaux
+            
+            // Fermer la modale
+            const modale = document.getElementById('modale')
+            modale.style.display = 'none'
+
+            // Mettre à jour la galerie principale et celle de la modale avec la nouvelle liste des travaux
+            clearGallery()
+            appendGallery(newGallery)
+            filterWorks(newGallery)
+            resetForm()
+            displayWorksInModal(newGallery)
+
+        } else {
+            const errorText = await res.text() // Récupérer le texte d'erreur
+
+            if (res.status === 400) {
+                alert(`Erreur lors de l'ajout du projet : ${errorText}`)
+            } else if (res.status === 500) {
+                alert(`Erreur interne du serveur. Veuillez réessayer plus tard.`)
+            } else if (res.status === 401) {
+                alert('Session expirée, merci de vous reconnecter')
+                document.location.href = ("login.html")
+            }
+        }
+    } catch (error) {
+        console.error('Erreur lors de l\'envoi du projet :', error)
+    }
+}

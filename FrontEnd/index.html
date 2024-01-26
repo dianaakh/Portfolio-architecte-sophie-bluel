@@ -28,7 +28,7 @@
 				<li>projets</li>
 				<li><a href="#contact">contact</a></li>
 				<li><a href="./login.html" class="nav-connexion">login</a></li>
-				<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+				<li><i class="fa-brands fa-instagram"></i></li>
 			</ul>
 		</nav>
 	</header>
@@ -58,7 +58,7 @@
 			</div>
 		</section>
 
-		<aside id="modale" class="modale">
+		<aside id="modale">
 			<div class="modale-wrapper">
 
 				<div class="modale-first">
@@ -74,7 +74,10 @@
 					<i class="fa-solid fa-xmark js-modale-trigger"></i>
 					<h2 class="modale-title">Ajout photo</h2>
 
-					<form action="" enctype="multipart/form-data" class="form-photo">   <!-- enctype utilisé pour l'envoi de fichiers binaires (comme des images) via le form -->
+					<form action="" enctype="multipart/form-data" class="form-upload-photo">
+						<!-- enctype utilisé pour l'envoi de fichiers binaires (comme des images) via le form -->
+
+						<div class="form-photo">
 							<i class="fa-regular fa-image"></i>
 							<label class='label-photo' for="photo">+ Ajouter une photo</label>
 							<input type="file" name="photo" id="photo">
@@ -82,22 +85,22 @@
 						</div>
 
 						<div class="form-title">
-							<label for="titre">Titre</label>
+							<label for="title">Titre</label>
 							<input type="text" name="titre" id="title">
 						</div>
 
 						<div class="form-categorie">
 							<label for="categorie">Catégorie</label>
 							<select name="categorie" id="categorie">
-								<option value=""></option>
-								<option value="1">Objets</option>
-								<option value="2">Appartements</option>
-								<option value="3">Hôtels & restaurants</option>
+								<option class="option-default" value="" selected></option>
+								<option class="option" value="1">Objets</option>
+								<option class="option" value="2">Appartements</option>
+								<option class="option" value="3">Hôtels & restaurants</option>
 							</select>
 						</div>
+						<hr class="modale-bordure">
+						<button class="btn-validate"> Valider </button>
 					</form>
-					<hr class="modale-bordure">
-					<button class="btn-validate" disabled> Valider </button>
 				</div>
 			</div>
 		</aside>
@@ -110,7 +113,7 @@
 				<input type="text" name="name" id="name">
 				<label for="email">Email</label>
 				<input type="email" name="email" id="email">
-				<label for="message">Message</label>
+				<label for="message" id="contact-message">Message</label>
 				<textarea name="message" id="message" cols="30" rows="10"></textarea>
 				<input type="submit" value="Envoyer">
 			</form>

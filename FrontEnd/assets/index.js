@@ -64,7 +64,8 @@ const appendGallery = (works) => {
     const gallery = document.createElement("div")
     gallery.classList.add("gallery")
 
-   // Utilisation de la méthode map pour parcourir chaque élément du tableau "works" et générer une chaîne de balises HTML représentant chaque œuvre dans la galerie
+   // Utilisation de la méthode map pour parcourir chaque élément du tableau "works" et générer une chaîne de balises HTML
+  // représentant chaque œuvre dans la galerie
     gallery.innerHTML = works.map((work) =>  
         `<figure>                               
             <img src=${work.imageUrl} alt=${work.title}>
@@ -84,6 +85,7 @@ const createFilters = (categories) => {
 
     filter.innerHTML =
         `<div class="button selected" id="0"> Tous </div>`
+        
         + categories.map((category) =>
             `<div class="button" id="${category.id}"> ${category.name} </div>`).join("")
 
@@ -100,6 +102,7 @@ const filterWorks = (works) => {
             let worksToDisplay = []
 
             if (i !== 0) {
+                 // Filtrer les œuvres en fonction de la catégorie sélectionnée (identifiée par l'index i)
                 worksToDisplay = works.filter((work) => work.categoryId == i)
             } else {
                 worksToDisplay = works
@@ -191,7 +194,7 @@ const deleteWork = async (event) => {
         })
 
         if (res.ok) {
-            event.target.parentElement.remove()
+            event.target.parentElement.remove()   // Supprime l'élément parent de l'icône de corbeille (le projet dans la modale)
             const newGallery = await getGallery()
             displayWorksInModal(newGallery)   // Afficher la modale avec les oeuvres mise à jour
             clearGallery()                   // Vider ancienne gallerie dans la page principale
